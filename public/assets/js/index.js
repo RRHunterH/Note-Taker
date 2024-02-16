@@ -10,30 +10,28 @@ let clearBtn;
 if (typeof window !== 'undefined') {
   // Wait for the DOM to be ready
   document.addEventListener('DOMContentLoaded', () => {
-    // Check window location
-    if (window.location.pathname === '/notes') {
-      console.log('Inside /notes condition');
-      // Select DOM elements
-      noteTitle = document.querySelector('.note-title');
-      noteText = document.querySelector('.note-textarea');
-      saveNoteBtn = document.querySelector('.save-note');
-      newNoteBtn = document.querySelector('.new-note');
-      noteList = document.querySelector('.list-container .list-group');
+    // Define variables
+    let noteTitle = document.querySelector('.note-title');
+    let noteText = document.querySelector('.note-textarea');
+    let saveNoteBtn = document.querySelector('.save-note');
+    let newNoteBtn = document.querySelector('.new-note');
+    let noteList = document.querySelector('.list-container .list-group');
+    let clearBtn = document.querySelector('.delete-note');
+    let noteForm = document.querySelector('.note-form');
       
   
       // Event listeners for interacting with the notes
-      $saveNoteBtn.addEventListener('click', handleNoteSave);
-      $newNoteBtn.addEventListener('click', handleNewNoteView);
-      $noteList.addEventListener('click', handleNoteView);
-      $noteList.addEventListener('click', handleNoteDelete);
-      $noteTitle.addEventListener('input', handleRenderSaveBtn);
-      $noteText.addEventListener('input', handleRenderSaveBtn);
-
+      saveNoteBtn.addEventListener('click', handleNoteSave);
+      newNoteBtn.addEventListener('click', handleNewNoteView);
+      noteList.addEventListener('click', handleNoteView);
+      noteList.addEventListener('click', handleNoteDelete);
+      noteTitle.addEventListener('input', handleRenderSaveBtn);
+      noteText.addEventListener('input', handleRenderSaveBtn);
+    
       // Fetch and render notes on page load
       getAndRenderNotes();
-    }
-
-    // ... rest of your code ...
+      
+    });
 
     // Function to show an element
     const show = (elem) => {
@@ -213,5 +211,4 @@ if (window.location.pathname === '/notes') {
 }
 
 getAndRenderNotes();
-});
 }
