@@ -1,29 +1,48 @@
+// Define variables
 let noteForm;
 let noteTitle;
 let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
+let clearBtn;
 
-if (window.location.pathname === '/notes') {
-  noteForm = document.querySelector('.note-form');
-  noteTitle = document.querySelector('.note-title');
-  noteText = document.querySelector('.note-textarea');
-  saveNoteBtn = document.querySelector('.save-note');
-  newNoteBtn = document.querySelector('.new-note');
-  clearBtn = document.querySelector('.clear-btn');
-  noteList = document.querySelectorAll('.list-container .list-group');
-}
+if (typeof window !== 'undefined') {
+  // Wait for the DOM to be ready
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check window location
+    if (window.location.pathname === '/notes') {
+      // Select DOM elements
+      noteForm = document.querySelector('.note-form');
+      noteTitle = document.querySelector('.note-title');
+      noteText = document.querySelector('.note-textarea');
+      saveNoteBtn = document.querySelector('.save-note');
+      newNoteBtn = document.querySelector('.new-note');
+      clearBtn = document.querySelector('.clear-btn');
+      noteList = document.querySelector('.list-container .list-group');
 
-// Show an element
-const show = (elem) => {
-  elem.style.display = 'inline';
-};
+      // Event listeners and functions for interacting with the notes
 
-// Hide an element
-const hide = (elem) => {
-  elem.style.display = 'none';
-};
+      saveNoteBtn.addEventListener('click', handleNoteSave);
+      newNoteBtn.addEventListener('click', handleNewNoteView);
+      clearBtn.addEventListener('click', renderActiveNote);
+      noteForm.addEventListener('input', handleRenderBtns);
+
+      // Fetch and render notes on page load
+      getAndRenderNotes();
+    }
+
+    // ... rest of your code ...
+
+    // Function to show an element
+    const show = (elem) => {
+      elem.style.display = 'inline';
+    };
+
+    // Function to hide an element
+    const hide = (elem) => {
+      elem.style.display = 'none';
+    };
 
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
@@ -110,8 +129,8 @@ const handleNoteView = (e) => {
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
+  e.preventDefault();
   activeNote = {};
-  show(clearBtn);
   renderActiveNote();
 };
 
@@ -131,7 +150,7 @@ const handleRenderBtns = () => {
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
   if (window.location.pathname === '/notes') {
-    noteList.forEach((el) => (el.innerHTML = ''));
+    noteList.innerHTML = ''; // Clear the list before rendering
   }
 
   let noteListItems = [];
@@ -177,7 +196,7 @@ const renderNoteList = async (notes) => {
   });
 
   if (window.location.pathname === '/notes') {
-    noteListItems.forEach((note) => noteList[0].append(note));
+    noteListItems.forEach((note) => noteList.append(note)); // Append each note to the list
   }
 };
 
@@ -192,3 +211,5 @@ if (window.location.pathname === '/notes') {
 }
 
 getAndRenderNotes();
+});
+}
