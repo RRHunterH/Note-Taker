@@ -12,21 +12,21 @@ if (typeof window !== 'undefined') {
   document.addEventListener('DOMContentLoaded', () => {
     // Check window location
     if (window.location.pathname === '/notes') {
+      console.log('Inside /notes condition');
       // Select DOM elements
-      noteForm = document.querySelector('.note-form');
-      noteTitle = document.querySelector('.note-title');
-      noteText = document.querySelector('.note-textarea');
-      saveNoteBtn = document.querySelector('.save-note');
-      newNoteBtn = document.querySelector('.new-note');
-      clearBtn = document.querySelector('.clear-btn');
-      noteList = document.querySelector('.list-container .list-group');
-
-      // Event listeners and functions for interacting with the notes
-
-      saveNoteBtn.addEventListener('click', handleNoteSave);
-      newNoteBtn.addEventListener('click', handleNewNoteView);
-      clearBtn.addEventListener('click', renderActiveNote);
-      noteForm.addEventListener('input', handleRenderBtns);
+      $noteTitle = document.querySelector('.note-title');
+      $noteText = document.querySelector('.note-textarea');
+      $saveNoteBtn = document.querySelector('.save-note');
+      $newNoteBtn = document.querySelector('.new-note');
+      $noteList = document.querySelector('.list-container .list-group');
+  
+      // Event listeners for interacting with the notes
+      $saveNoteBtn.addEventListener('click', handleNoteSave);
+      $newNoteBtn.addEventListener('click', handleNewNoteView);
+      $noteList.addEventListener('click', handleNoteView);
+      $noteList.addEventListener('click', handleNoteDelete);
+      $noteTitle.addEventListener('input', handleRenderSaveBtn);
+      $noteText.addEventListener('input', handleRenderSaveBtn);
 
       // Fetch and render notes on page load
       getAndRenderNotes();

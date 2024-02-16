@@ -21,7 +21,7 @@
         }
 
         .save-note {
-            display: none;
+            display: inline;
         }
 
         .icons i {
@@ -94,18 +94,9 @@
     <nav class="navbar bg-info">
         <a class="navbar-brand text-light p-3" href="/">Note Taker </a>
         <div class="icons">
-            <button type="button" class="btn btn-outline-light btn-sm save-note">
-                <span class="fas fa-save"></span>
-                <span>Save Note</span>
-            </button>
-            <button type="button" class="btn btn-outline-light btn-sm new-note">
-                <span class="fas fa-edit"></span>
-                <span>New Note</span>
-            </button>
-            <button type="button" class="btn btn-sm btn-outline-danger clear-btn">
-                <span class="fas fa-times"></span>
-                <span>Clear Form</span>
-            </button>
+          <i class="fas fa-save text-light save-note"></i>
+          <i class="fas fa-pen text-light new-note"></i>
+          <i class="fas fa-trash-alt text-light delete-note"></i>
         </div>
     </nav>
     <div class="container-fluid">
