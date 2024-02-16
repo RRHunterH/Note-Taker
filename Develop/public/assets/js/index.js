@@ -14,11 +14,12 @@ if (typeof window !== 'undefined') {
     if (window.location.pathname === '/notes') {
       console.log('Inside /notes condition');
       // Select DOM elements
-      $noteTitle = document.querySelector('.note-title');
-      $noteText = document.querySelector('.note-textarea');
-      $saveNoteBtn = document.querySelector('.save-note');
-      $newNoteBtn = document.querySelector('.new-note');
-      $noteList = document.querySelector('.list-container .list-group');
+      noteTitle = document.querySelector('.note-title');
+      noteText = document.querySelector('.note-textarea');
+      saveNoteBtn = document.querySelector('.save-note');
+      newNoteBtn = document.querySelector('.new-note');
+      noteList = document.querySelector('.list-container .list-group');
+      
   
       // Event listeners for interacting with the notes
       $saveNoteBtn.addEventListener('click', handleNoteSave);
@@ -90,33 +91,37 @@ const renderActiveNote = () => {
     noteText.value = '';
   }
 };
-
+// Function to handle saving a new note
 const handleNoteSave = () => {
   const newNote = {
-    title: noteTitle.value,
-    text: noteText.value
+    title: $noteTitle.value,
+    text: $noteText.value
   };
-  saveNote(newNote).then(() => {
-    getAndRenderNotes();
+
+  // Send a POST request to save the new note
+  fetch("/api/notes", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newNote)
+  })
+  .then(response => {
+    if (response.ok) {
+      // If the request was successful, update the UI
+      return response.json();
+    } else {
+      throw new Error('Failed to save note');
+    }
+  })
+  .then(savedNote => {
+    // Update the UI to display the saved note
+    // For example, you can append it to the list of existing notes
+    renderNoteList([savedNote, ...existingNotes]); // Assuming `existingNotes` is an array of existing notes
     renderActiveNote();
-  });
-};
-
-// Delete the clicked note
-const handleNoteDelete = (e) => {
-  // Prevents the click listener for the list from being called when the button inside of it is clicked
-  e.stopPropagation();
-
-  const note = e.target;
-  const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
-
-  if (activeNote.id === noteId) {
-    activeNote = {};
-  }
-
-  deleteNote(noteId).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
+  })
+  .catch(error => {
+    console.error('Error saving note:', error);
   });
 };
 
@@ -135,15 +140,12 @@ const handleNewNoteView = (e) => {
 };
 
 // Renders the appropriate buttons based on the state of the form
-const handleRenderBtns = () => {
-  show(clearBtn);
-  if (!noteTitle.value.trim() && !noteText.value.trim()) {
-    hide(clearBtn);
-  } else if (!noteTitle.value.trim() || !noteText.value.trim()) {
-    hide(saveNoteBtn);
-  } else {
-    show(saveNoteBtn);
-  }
+if (!$noteTitle.value.trim() && !$noteText.value.trim()) {
+  hide(clearBtn);
+} else if (!$noteTitle.value.trim() || !$noteText.value.trim()) {
+  hide(saveNoteBtn);
+} else {
+  show(saveNoteBtn);
 };
 
 // Render the list of note titles
